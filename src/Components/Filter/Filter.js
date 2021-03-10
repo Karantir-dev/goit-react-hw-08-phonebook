@@ -1,5 +1,6 @@
 import { Component } from 'react';
 import { connect } from 'react-redux';
+import PropTypes from 'prop-types';
 
 import actions from '../../Redux/actions';
 
@@ -30,8 +31,12 @@ class Filter extends Component {
   }
 }
 
+Filter.propTypes = {
+  onChangeFilter: PropTypes.func,
+};
+
 const mapDispatchToProps = dispatch => ({
-  onChangeFilter: text => dispatch(actions.onChangeFilter(text)),
+  onChangeFilter: text => dispatch(actions.changeFilter(text)),
 });
 
 export default connect(null, mapDispatchToProps)(Filter);

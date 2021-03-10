@@ -2,6 +2,7 @@ import { Component } from 'react';
 import { connect } from 'react-redux';
 import { v4 as uuidv4 } from 'uuid';
 import { CSSTransition } from 'react-transition-group';
+import PropTypes from 'prop-types';
 
 import actions from '../../Redux/actions';
 import Notification from '../Notification/Notification';
@@ -36,12 +37,17 @@ class AddContactForm extends Component {
         this.setState({ warningShown: false });
       }, 3000);
     } else {
-      this.props.onSubmit(this.state);
+      const { contactName, contactNumber } = this.state;
+      const contact = { contactName, contactNumber };
+
+      this.props.onSubmit(contact);
       this.setState({ contactName: '', contactNumber: '' });
     }
   };
 
   render() {
+    const { warningShown, contactNumber, contactName } = this.state;
+
     return (
       <>
         <form className={s.form} onSubmit={this.onSubmitForm}>
@@ -51,7 +57,7 @@ class AddContactForm extends Component {
               className={s.formInput}
               name="contactName"
               onChange={this.onChange}
-              value={this.state.contactName}
+              value={contactName}
             ></input>
           </label>
 
@@ -62,7 +68,7 @@ class AddContactForm extends Component {
               type="tel"
               name="contactNumber"
               onChange={this.onChange}
-              value={this.state.contactNumber}
+              value={contactNumber}
             ></input>
           </label>
 
@@ -72,7 +78,7 @@ class AddContactForm extends Component {
         </form>
 
         <CSSTransition
-          in={this.state.warningShown}
+          in={warningShown}
           classNames={stylesNotif}
           timeout={250}
           unmountOnExit
@@ -83,6 +89,11 @@ class AddContactForm extends Component {
     );
   }
 }
+
+AddContactForm.propTypes = {
+  allContacts: PropTypes.array,
+  onSubmit: PropTypes.func,
+};
 
 const mapStateToProps = state => ({
   allContacts: state.allContacts,

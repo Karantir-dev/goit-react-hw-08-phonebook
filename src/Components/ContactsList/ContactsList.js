@@ -1,5 +1,6 @@
 import { connect } from 'react-redux';
 import { CSSTransition, TransitionGroup } from 'react-transition-group';
+import PropTypes from 'prop-types';
 
 import Contact from '../Contact/Contact';
 
@@ -18,6 +19,10 @@ function ContactsList({ filteredContacts }) {
     </TransitionGroup>
   );
 }
+
+ContactsList.propTypes = {
+  filteredContacts: PropTypes.array,
+};
 
 const getFilteredContacts = (allContacts, filter) => {
   return allContacts.filter(contact =>
