@@ -1,10 +1,10 @@
 import { Component } from 'react';
 import { connect } from 'react-redux';
-import { v4 as uuidv4 } from 'uuid';
 import { CSSTransition } from 'react-transition-group';
 import PropTypes from 'prop-types';
+// import { uuid } from 'uuidv4';
 
-import actions from '../../Redux/actions';
+import operations from '../../Redux/operations';
 import Notification from '../Notification/Notification';
 
 import stylesNotif from '../Notification/Notification.module.css';
@@ -101,8 +101,8 @@ const mapStateToProps = state => ({
 
 const mapDispatchToProps = dispatch => ({
   onSubmit: contact => {
-    contact.id = uuidv4();
-    return dispatch(actions.addContact(contact));
+    // contact.id = uuid();
+    dispatch(operations.addContact(contact));
   },
 });
 

@@ -1,7 +1,7 @@
 import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
 
-import actions from '../../Redux/actions';
+import operations from '../../Redux/operations';
 
 import s from './Contact.module.css';
 import icon from '../../icons.svg';
@@ -12,9 +12,8 @@ function Contact({ contact, onDelete }) {
       {`${contact.contactName}: ${contact.contactNumber}`}
       <button
         className={s.btn}
-        id={contact.id}
         type="button"
-        onClick={onDelete}
+        onClick={() => onDelete(contact.id)}
       >
         <img className={s.svg} src={icon} alt="" />
       </button>
@@ -28,7 +27,7 @@ Contact.propTypes = {
 };
 
 const mapDispatchToProps = dispatch => ({
-  onDelete: e => dispatch(actions.deleteContact(e.currentTarget.id)),
+  onDelete: id => dispatch(operations.deleteContact(id)),
 });
 
 export default connect(null, mapDispatchToProps)(Contact);
