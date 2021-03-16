@@ -1,51 +1,40 @@
-import { CSSTransition } from 'react-transition-group';
 import { connect } from 'react-redux';
 import { Component } from 'react';
+import { Switch, Route } from 'react-router-dom';
 
-import AddContactForm from './Components/AddContactForm/AddContactForm';
-import ContactsList from './Components/ContactsList/ContactsList';
-import Filter from './Components/Filter/Filter';
-import selectors from './Redux/selectors';
+import AppBar from './Components/AppBar/AppBar';
+import HomeView from './Views/HomeView';
+import RegisterView from './Views/RegisterView';
+import LoginView from './Views/LoginView';
+import ContactsView from './Views/ContactsView/ContactsView';
+
 import operations from './Redux/operations';
 
 import s from './App.module.css';
 
 class App extends Component {
-  componentDidMount() {
-    this.props.fetchContacts();
-  }
+  // componentDidMount() {
+  //   this.props.fetchContacts();
+  // }
 
   render() {
     return (
       <div className={s.container}>
-        <CSSTransition
-          in={true}
-          appear={true}
-          timeout={500}
-          classNames={s}
-          unmountOnExit
-        >
-          <h1 className={s.title}>Phonebook</h1>
-        </CSSTransition>
+        <AppBar />
 
-        <AddContactForm />
-
-        <Filter />
-
-        {this.props.loading && <h1>Загружаем...</h1>}
-
-        <ContactsList />
+        <Switch>
+          <Route exact path="/" component={HomeView} />
+          <Route path="/register" component={RegisterView} />
+          <Route path="/login" component={LoginView} />
+          <Route path="/contacts" component={ContactsView} />
+        </Switch>
       </div>
     );
   }
 }
 
-const mapStateToProps = state => ({
-  loading: selectors.getLoading(state),
-});
-
 const mapDispatchToProps = dispatch => ({
   fetchContacts: () => dispatch(operations.fetchContacts()),
 });
 
-export default connect(mapStateToProps, mapDispatchToProps)(App);
+export default connect(null, mapDispatchToProps)(App);

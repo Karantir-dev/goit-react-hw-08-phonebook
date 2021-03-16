@@ -1,0 +1,14 @@
+.appear {
+  transform: scale(0.1);
+  opacity: 0;
+}
+
+.appearActive {
+  transform: scale(1);
+  opacity: 1;
+  transition: all 500ms linear;
+}
+
+.title {
+  color: rgb(66, 162, 252);
+}
