@@ -1,9 +1,10 @@
 import { connect } from 'react-redux';
 import { CSSTransition, TransitionGroup } from 'react-transition-group';
 import PropTypes from 'prop-types';
-import selectors from '../../Redux/selectors';
 
 import Contact from '../Contact/Contact';
+
+import contactsSelectors from '../../Redux/contacts/contacts-selectors';
 
 import s from './ContactsList.module.css';
 
@@ -26,7 +27,7 @@ ContactsList.propTypes = {
 };
 
 const mapStateToProps = state => ({
-  filteredContacts: selectors.getFilteredContacts(state),
+  filteredContacts: contactsSelectors.getFilteredContacts(state),
 });
 
 export default connect(mapStateToProps)(ContactsList);

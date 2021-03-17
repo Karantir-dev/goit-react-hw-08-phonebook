@@ -1,7 +1,7 @@
 import axios from 'axios';
-import actions from './actions';
+import actions from './contacts-actions';
 
-axios.defaults.baseURL = ' http://localhost:4040';
+axios.defaults.baseURL = 'https://goit-phonebook-api.herokuapp.com';
 
 const addContact = contact => dispatch => {
   dispatch(actions.addContactRequest());
@@ -9,7 +9,7 @@ const addContact = contact => dispatch => {
   axios
     .post('/contacts', contact)
     .then(({ data }) => dispatch(actions.addContactSucсess(data)))
-    .catch(err => dispatch(actions.addContactError(err)));
+    .catch(err => dispatch(actions.addContactError(err.message)));
 };
 
 const deleteContact = id => dispatch => {
@@ -18,7 +18,7 @@ const deleteContact = id => dispatch => {
   axios
     .delete(`/contacts/${id}`)
     .then(() => dispatch(actions.deleteContactSucсess(id)))
-    .catch(err => dispatch(actions.deleteContactError(err)));
+    .catch(err => dispatch(actions.deleteContactError(err.message)));
 };
 
 const fetchContacts = () => dispatch => {
@@ -27,7 +27,7 @@ const fetchContacts = () => dispatch => {
   axios
     .get('/contacts')
     .then(({ data }) => dispatch(actions.fetchContactsSucсess(data)))
-    .catch(err => dispatch(actions.fetchContactsError(err)));
+    .catch(err => dispatch(actions.fetchContactsError(err.message)));
 };
 
 export default { addContact, deleteContact, fetchContacts };

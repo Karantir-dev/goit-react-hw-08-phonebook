@@ -2,18 +2,19 @@ import { Component } from 'react';
 import { connect } from 'react-redux';
 import { CSSTransition } from 'react-transition-group';
 import PropTypes from 'prop-types';
-// import { uuid } from 'uuidv4';
 
-import operations from '../../Redux/operations';
 import Notification from '../Notification/Notification';
+
+import contactsOperations from '../../Redux/contacts/contacts-operations';
 
 import stylesNotif from '../Notification/Notification.module.css';
 import s from './AddContactForm.module.css';
+import contactsSelectors from '../../Redux/contacts/contacts-selectors';
 
 class AddContactForm extends Component {
   state = {
-    contactName: '',
-    contactNumber: '',
+    name: '',
+    number: '',
     warningShown: false,
   };
 
@@ -26,27 +27,23 @@ class AddContactForm extends Component {
   onSubmitForm = e => {
     e.preventDefault();
 
-    if (
-      this.props.allContacts.some(
-        ({ contactName }) => contactName === this.state.contactName,
-      )
-    ) {
+    if (this.props.allContacts.some(({ name }) => name === this.state.name)) {
       this.setState({ warningShown: true });
 
       setTimeout(() => {
         this.setState({ warningShown: false });
       }, 3000);
     } else {
-      const { contactName, contactNumber } = this.state;
-      const contact = { contactName, contactNumber };
+      const { name, number } = this.state;
+      const contact = { name, number };
 
-      this.props.onSubmit(contact);
-      this.setState({ contactName: '', contactNumber: '' });
+      this.props.onAddContact(contact);
+      this.setState({ name: '', number: '' });
     }
   };
 
   render() {
-    const { warningShown, contactNumber, contactName } = this.state;
+    const { warningShown, number, name } = this.state;
 
     return (
       <>
@@ -55,9 +52,9 @@ class AddContactForm extends Component {
             Name
             <input
               className={s.formInput}
-              name="contactName"
+              name="name"
               onChange={this.onChange}
-              value={contactName}
+              value={name}
             ></input>
           </label>
 
@@ -66,9 +63,9 @@ class AddContactForm extends Component {
             <input
               className={s.formInput}
               type="tel"
-              name="contactNumber"
+              name="number"
               onChange={this.onChange}
-              value={contactNumber}
+              value={number}
             ></input>
           </label>
 
@@ -96,14 +93,11 @@ AddContactForm.propTypes = {
 };
 
 const mapStateToProps = state => ({
-  allContacts: state.allContacts,
+  allContacts: contactsSelectors.getAllContacts(state),
 });
 
-const mapDispatchToProps = dispatch => ({
-  onSubmit: contact => {
-    // contact.id = uuid();
-    dispatch(operations.addContact(contact));
-  },
-});
+const mapDispatchToProps = {
+  onAddContact: contactsOperations.addContact,
+};
 
 export default connect(mapStateToProps, mapDispatchToProps)(AddContactForm);

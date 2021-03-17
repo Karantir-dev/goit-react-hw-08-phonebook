@@ -6,11 +6,16 @@ import AddContactForm from '../../Components/AddContactForm/AddContactForm';
 import ContactsList from '../../Components/ContactsList/ContactsList';
 import Filter from '../../Components/Filter/Filter';
 
-import selectors from '../../Redux/selectors';
+import contactsSelectors from '../../Redux/contacts/contacts-selectors';
+import contactsOperations from '../../Redux/contacts/contacts-operations';
 
 import s from './ContactsView.module.css';
 
 class ContactsView extends Component {
+  componentDidMount() {
+    this.props.fetchContacts();
+  }
+
   render() {
     return (
       <div className="">
@@ -37,7 +42,11 @@ class ContactsView extends Component {
 }
 
 const mapStateToProps = state => ({
-  loading: selectors.getLoading(state),
+  loading: contactsSelectors.getLoading(state),
 });
 
-export default connect(mapStateToProps)(ContactsView);
+const mapDispatchToProps = {
+  fetchContacts: contactsOperations.fetchContacts,
+};
+
+export default connect(mapStateToProps, mapDispatchToProps)(ContactsView);
