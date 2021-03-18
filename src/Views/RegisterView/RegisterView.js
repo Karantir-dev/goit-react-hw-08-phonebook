@@ -3,6 +3,8 @@ import { connect } from 'react-redux';
 
 import authOperations from '../../Redux/auth/auth-operations';
 
+import s from './RegisterView.module.css';
+
 class RegisterView extends Component {
   state = {
     name: '',
@@ -25,40 +27,47 @@ class RegisterView extends Component {
     const { name, email, password } = this.state;
 
     return (
-      <div className="">
+      <div className={s.container}>
         <h2>Registration page</h2>
 
         <form onSubmit={this.onSubmit}>
-          <label>
+          <label className={s.label}>
             Name
             <input
+              className={s.input}
               type="name"
               name="name"
+              placeholder="Alexander Repeta"
               value={name}
               onChange={this.onChange}
             />
           </label>
 
-          <label>
+          <label className={s.label}>
             Email
             <input
+              className={s.input}
               type="email"
               name="email"
+              placeholder="example@gmail.com"
               value={email}
               onChange={this.onChange}
             />
           </label>
 
-          <label>
+          <label className={s.label}>
             Password
             <input
+              className={s.input}
               type="password"
               name="password"
               value={password}
               onChange={this.onChange}
             />
           </label>
-          <button type="submit">Register</button>
+          <button className={s.btn} type="submit">
+            Register
+          </button>
         </form>
       </div>
     );

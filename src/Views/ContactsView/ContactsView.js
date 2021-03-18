@@ -5,11 +5,13 @@ import { connect } from 'react-redux';
 import AddContactForm from '../../Components/AddContactForm/AddContactForm';
 import ContactsList from '../../Components/ContactsList/ContactsList';
 import Filter from '../../Components/Filter/Filter';
+import Loader from 'react-loader-spinner';
 
 import contactsSelectors from '../../Redux/contacts/contacts-selectors';
 import contactsOperations from '../../Redux/contacts/contacts-operations';
 
 import s from './ContactsView.module.css';
+import 'react-loader-spinner/dist/loader/css/react-spinner-loader.css';
 
 class ContactsView extends Component {
   componentDidMount() {
@@ -18,7 +20,7 @@ class ContactsView extends Component {
 
   render() {
     return (
-      <div className="">
+      <div className={s.container}>
         <CSSTransition
           in={true}
           appear={true}
@@ -33,7 +35,9 @@ class ContactsView extends Component {
 
         <Filter />
 
-        {this.props.loading && <h1>Загружаем...</h1>}
+        {this.props.loading && (
+          <Loader type="Oval" color="#00BFFF" width={'5vw'} />
+        )}
 
         <ContactsList />
       </div>

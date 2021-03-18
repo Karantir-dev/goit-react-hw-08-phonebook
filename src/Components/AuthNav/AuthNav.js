@@ -5,8 +5,12 @@ import s from './AuthNav.module.css';
 function AuthNav() {
   return (
     <nav className={s.nav}>
-      <NavLink to="/login">LogIn</NavLink>
-      <NavLink to="/register">Register</NavLink>
+      <NavLink className={s.link} activeClassName={s.activeLink} to="/login">
+        Sign In
+      </NavLink>
+      <NavLink className={s.link} activeClassName={s.activeLink} to="/register">
+        Register
+      </NavLink>
     </nav>
   );
 }

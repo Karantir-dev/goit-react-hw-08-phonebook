@@ -1,27 +1,23 @@
-.form {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  text-align: start;
-  margin: 20px auto;
-  width: 300px;
-  height: 250px;
+.container {
+  width: 400px;
+  padding: 20px;
+  margin: 20px;
   border: 1px solid black;
-  background-color: #fff;
   border-radius: 4px;
+  background-color: #fff;
   box-shadow: 1px 1px 6px 1px rgba(0, 0, 0, 0.76);
 }
 
 .label {
   display: flex;
   flex-direction: column;
-  width: 300px;
-  padding: 20px;
-  font-weight: 600;
+  align-items: flex-start;
+  padding: 15px;
 }
 
-.formInput {
-  margin-top: 5px;
+.input {
+  width: 100%;
+  margin: 10px 0;
 }
 
 .btn {

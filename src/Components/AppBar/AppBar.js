@@ -12,10 +12,18 @@ function AppBar({ isAuthenticated }) {
   return (
     <div className={s.container}>
       <nav className={s.nav}>
-        <NavLink to="/" className={s.home}>
+        <NavLink exact to="/" className={s.link} activeClassName={s.activeLink}>
           Home
         </NavLink>
-        {isAuthenticated && <NavLink to="/contacts">Contacts</NavLink>}
+        {isAuthenticated && (
+          <NavLink
+            to="/contacts"
+            className={s.link}
+            activeClassName={s.activeLink}
+          >
+            Contacts
+          </NavLink>
+        )}
       </nav>
 
       {isAuthenticated ? <UserMenu /> : <AuthNav />}

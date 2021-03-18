@@ -3,12 +3,15 @@ import authOperations from '../../Redux/auth/auth-operations';
 import authSelectors from '../../Redux/auth/auth-selectors';
 import defaultAvatar from './default-avatar.png';
 
+import s from './UserMenu.module.css';
+
 function UserMenu({ onLogout, userName }) {
   return (
-    <div>
+    <div className={s.container}>
+      <p>Welcome, {userName}</p>
+
       <img src={defaultAvatar} alt="" width="32" />
-      <span>Welcome, {userName}</span>
-      <button type="button" onClick={onLogout}>
+      <button className={s.btn} type="button" onClick={onLogout}>
         Logout
       </button>
     </div>

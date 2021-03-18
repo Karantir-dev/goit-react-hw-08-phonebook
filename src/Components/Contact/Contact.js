@@ -9,7 +9,9 @@ import icon from '../../icons.svg';
 function Contact({ contact, onDelete }) {
   return (
     <li className={s.listItem}>
-      {`${contact.name}: ${contact.number}`}
+      <span className={s.span}>{contact.name}</span>
+      <span className={s.span}>{contact.number}</span>
+
       <button
         className={s.btn}
         type="button"

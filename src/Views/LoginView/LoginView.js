@@ -3,6 +3,8 @@ import { connect } from 'react-redux';
 
 import authOperations from '../../Redux/auth/auth-operations';
 
+import s from './LoginView.module.css';
+
 class LoginView extends Component {
   state = {
     email: '',
@@ -24,30 +26,35 @@ class LoginView extends Component {
     const { email, password } = this.state;
 
     return (
-      <div className="">
-        <h2>LogIn page</h2>
+      <div className={s.container}>
+        <h2>Sign In page</h2>
 
         <form onSubmit={this.onSubmit}>
-          <label>
+          <label className={s.label}>
             Email
             <input
+              className={s.input}
               type="email"
               name="email"
+              placeholder="example@gmail.com"
               value={email}
               onChange={this.onChange}
             />
           </label>
 
-          <label>
+          <label className={s.label}>
             Password
             <input
+              className={s.input}
               type="password"
               name="password"
               value={password}
               onChange={this.onChange}
             />
           </label>
-          <button type="submit">LogIn</button>
+          <button className={s.btn} type="submit">
+            Sign In
+          </button>
         </form>
       </div>
     );
