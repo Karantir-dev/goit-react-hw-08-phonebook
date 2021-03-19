@@ -1,6 +1,8 @@
 import { Component } from 'react';
 import { connect } from 'react-redux';
+import { createPortal } from 'react-dom';
 
+import Notification from '../../Components/Notification/Notification';
 import authOperations from '../../Redux/auth/auth-operations';
 
 import s from './RegisterView.module.css';
@@ -10,13 +12,22 @@ class RegisterView extends Component {
     name: '',
     email: '',
     password: '',
+    warningShown: false,
   };
 
   onSubmit = e => {
     e.preventDefault();
-    this.props.onRegister(this.state);
+    if (this.state.password.length < 7) {
+      this.setState({ warningShown: true });
 
-    this.setState({ name: '', email: '', password: '' });
+      setTimeout(() => {
+        this.setState({ warningShown: false });
+      }, 3000);
+    } else {
+      this.props.onRegister(this.state);
+
+      this.setState({ name: '', email: '', password: '' });
+    }
   };
 
   onChange = e => {
@@ -24,7 +35,8 @@ class RegisterView extends Component {
   };
 
   render() {
-    const { name, email, password } = this.state;
+    const { name, email, password, warningShown } = this.state;
+    const btnActive = Boolean(name && email && password);
 
     return (
       <div className={s.container}>
@@ -65,10 +77,17 @@ class RegisterView extends Component {
               onChange={this.onChange}
             />
           </label>
-          <button className={s.btn} type="submit">
+          <button className={s.btn} disabled={!btnActive} type="submit">
             Register
           </button>
         </form>
+        {createPortal(
+          <Notification
+            show={warningShown}
+            text={'Password must be at least 7 characters.'}
+          />,
+          document.getElementById('portal'),
+        )}
       </div>
     );
   }

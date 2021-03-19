@@ -24,6 +24,7 @@ class LoginView extends Component {
 
   render() {
     const { email, password } = this.state;
+    const btnActive = Boolean(email && password);
 
     return (
       <div className={s.container}>
@@ -52,7 +53,7 @@ class LoginView extends Component {
               onChange={this.onChange}
             />
           </label>
-          <button className={s.btn} type="submit">
+          <button className={s.btn} disabled={!btnActive} type="submit">
             Sign In
           </button>
         </form>
