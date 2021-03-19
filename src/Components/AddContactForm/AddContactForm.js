@@ -1,21 +1,22 @@
 import { Component } from 'react';
 import { connect } from 'react-redux';
-import { CSSTransition } from 'react-transition-group';
 import PropTypes from 'prop-types';
+import { createPortal } from 'react-dom';
 
+import InputMask from 'react-input-mask';
 import Notification from '../Notification/Notification';
 
 import contactsOperations from '../../Redux/contacts/contacts-operations';
-
-import stylesNotif from '../Notification/Notification.module.css';
-import s from './AddContactForm.module.css';
 import contactsSelectors from '../../Redux/contacts/contacts-selectors';
+
+import s from './AddContactForm.module.css';
 
 class AddContactForm extends Component {
   state = {
     name: '',
     number: '',
     warningShown: false,
+    textNotification: '',
   };
 
   onChange = e => {
@@ -24,26 +25,37 @@ class AddContactForm extends Component {
     });
   };
 
+  showWarning = text => {
+    this.setState({
+      textNotification: text,
+      warningShown: true,
+    });
+
+    setTimeout(() => {
+      this.setState({ warningShown: false });
+    }, 3000);
+  };
+
   onSubmitForm = e => {
     e.preventDefault();
+    const { name, number } = this.state;
 
-    if (this.props.allContacts.some(({ name }) => name === this.state.name)) {
-      this.setState({ warningShown: true });
-
-      setTimeout(() => {
-        this.setState({ warningShown: false });
-      }, 3000);
+    if (!name) {
+      this.showWarning('Enter contact name.');
+    } else if (!number) {
+      this.showWarning('Enter contact number.');
+    } else if (
+      this.props.allContacts.some(({ name }) => name === this.state.name)
+    ) {
+      this.showWarning('This contact is already on the list.');
     } else {
-      const { name, number } = this.state;
-      const contact = { name, number };
-
-      this.props.onAddContact(contact);
+      this.props.onAddContact({ name, number });
       this.setState({ name: '', number: '' });
     }
   };
 
   render() {
-    const { warningShown, number, name } = this.state;
+    const { warningShown, number, name, textNotification } = this.state;
 
     return (
       <>
@@ -60,13 +72,15 @@ class AddContactForm extends Component {
 
           <label className={s.label}>
             Number
-            <input
+            <InputMask
               className={s.formInput}
               type="tel"
               name="number"
               onChange={this.onChange}
               value={number}
-            ></input>
+              mask="+3\8(999) 999-99-99"
+              maskChar={null}
+            />
           </label>
 
           <button className={s.btn} type="submit">
@@ -74,14 +88,10 @@ class AddContactForm extends Component {
           </button>
         </form>
 
-        <CSSTransition
-          in={warningShown}
-          classNames={stylesNotif}
-          timeout={250}
-          unmountOnExit
-        >
-          <Notification />
-        </CSSTransition>
+        {createPortal(
+          <Notification text={textNotification} show={warningShown} />,
+          document.getElementById('portal'),
+        )}
       </>
     );
   }
