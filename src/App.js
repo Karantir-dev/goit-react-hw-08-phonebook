@@ -1,11 +1,13 @@
 import { connect } from 'react-redux';
 import { Component, Suspense, lazy } from 'react';
 import { Switch, Route } from 'react-router-dom';
+import { createPortal } from 'react-dom';
 
 import AppBar from './Components/AppBar/AppBar';
 import PrivateRoute from './Components/PrivateRoute';
 import PublicRoute from './Components/PublicRoute';
 import Loader from 'react-loader-spinner';
+import Notification from './Components/Notification/Notification';
 
 import authOperations from './Redux/auth/auth-operations';
 
@@ -65,6 +67,7 @@ class App extends Component {
             />
           </Switch>
         </Suspense>
+        {createPortal(<Notification />, document.getElementById('portal'))}
       </div>
     );
   }

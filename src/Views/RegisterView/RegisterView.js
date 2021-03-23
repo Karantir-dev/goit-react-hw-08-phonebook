@@ -1,9 +1,8 @@
 import { Component } from 'react';
 import { connect } from 'react-redux';
-import { createPortal } from 'react-dom';
 
-import Notification from '../../Components/Notification/Notification';
 import authOperations from '../../Redux/auth/auth-operations';
+import authActions from '../../Redux/auth/auth-actions';
 
 import s from './RegisterView.module.css';
 
@@ -12,17 +11,12 @@ class RegisterView extends Component {
     name: '',
     email: '',
     password: '',
-    warningShown: false,
   };
 
   onSubmit = e => {
     e.preventDefault();
     if (this.state.password.length < 7) {
-      this.setState({ warningShown: true });
-
-      setTimeout(() => {
-        this.setState({ warningShown: false });
-      }, 3000);
+      this.props.registerError('Password must be at least 7 characters.');
     } else {
       this.props.onRegister(this.state);
 
@@ -35,7 +29,7 @@ class RegisterView extends Component {
   };
 
   render() {
-    const { name, email, password, warningShown } = this.state;
+    const { name, email, password } = this.state;
     const btnActive = Boolean(name && email && password);
 
     return (
@@ -81,13 +75,6 @@ class RegisterView extends Component {
             Register
           </button>
         </form>
-        {createPortal(
-          <Notification
-            show={warningShown}
-            text={'Password must be at least 7 characters.'}
-          />,
-          document.getElementById('portal'),
-        )}
       </div>
     );
   }
@@ -95,6 +82,7 @@ class RegisterView extends Component {
 
 const mapDispatchToProps = {
   onRegister: authOperations.register,
+  registerError: authActions.registerError,
 };
 
 export default connect(null, mapDispatchToProps)(RegisterView);

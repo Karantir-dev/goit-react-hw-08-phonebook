@@ -22,8 +22,12 @@ const register = credentials => dispatch => {
       token.set(response.data.token);
       dispatch(authActions.registerSuccess(response.data));
     })
-    .catch(err => {
-      dispatch(authActions.registerError(err.message));
+    .catch(() => {
+      dispatch(
+        authActions.registerError(
+          'An account has already been registered with this email address.',
+        ),
+      );
     });
 };
 

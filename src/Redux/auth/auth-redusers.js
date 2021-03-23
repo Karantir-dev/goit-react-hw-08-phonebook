@@ -22,7 +22,6 @@ const isAuthenticated = createReducer(false, {
   [authActions.registerSuccess]: () => true,
   [authActions.logInSuccess]: () => true,
   [authActions.getCurrentUserSuccess]: () => true,
-  [authActions.registerError]: () => false,
   [authActions.logInError]: () => false,
   [authActions.getCurrentUserError]: () => false,
   [authActions.logOutSuccess]: () => false,
@@ -30,7 +29,7 @@ const isAuthenticated = createReducer(false, {
 
 const setError = (_, { payload }) => payload;
 
-const error = createReducer(null, {
+const error = createReducer('', {
   [authActions.registerError]: setError,
   [authActions.logInError]: setError,
   [authActions.logOutError]: setError,

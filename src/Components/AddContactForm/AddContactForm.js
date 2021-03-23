@@ -1,22 +1,19 @@
 import { Component } from 'react';
 import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
-import { createPortal } from 'react-dom';
 
 import InputMask from 'react-input-mask';
-import Notification from '../Notification/Notification';
 
 import contactsOperations from '../../Redux/contacts/contacts-operations';
 import contactsSelectors from '../../Redux/contacts/contacts-selectors';
 
 import s from './AddContactForm.module.css';
+import authActions from '../../Redux/auth/auth-actions';
 
 class AddContactForm extends Component {
   state = {
     name: '',
     number: '',
-    warningShown: false,
-    textNotification: '',
   };
 
   onChange = e => {
@@ -25,37 +22,26 @@ class AddContactForm extends Component {
     });
   };
 
-  showWarning = text => {
-    this.setState({
-      textNotification: text,
-      warningShown: true,
-    });
-
-    setTimeout(() => {
-      this.setState({ warningShown: false });
-    }, 3000);
-  };
-
   onSubmitForm = e => {
     e.preventDefault();
     const { name, number } = this.state;
 
     if (!name) {
-      this.showWarning('Enter contact name.');
+      this.props.showWarning('Enter contact name.');
     } else if (!number) {
-      this.showWarning('Enter contact number.');
+      this.props.showWarning('Enter contact number.');
     } else if (
       this.props.allContacts.some(({ name }) => name === this.state.name)
     ) {
-      this.showWarning('This contact is already on the list.');
+      this.props.showWarning('This contact is already on the list.');
     } else {
-      this.props.onAddContact({ name, number });
+      this.props.onAddContact(this.state);
       this.setState({ name: '', number: '' });
     }
   };
 
   render() {
-    const { warningShown, number, name, textNotification } = this.state;
+    const { number, name } = this.state;
 
     return (
       <>
@@ -87,11 +73,6 @@ class AddContactForm extends Component {
             Add contact
           </button>
         </form>
-
-        {createPortal(
-          <Notification text={textNotification} show={warningShown} />,
-          document.getElementById('portal'),
-        )}
       </>
     );
   }
@@ -99,7 +80,6 @@ class AddContactForm extends Component {
 
 AddContactForm.propTypes = {
   allContacts: PropTypes.array,
-  onSubmit: PropTypes.func,
 };
 
 const mapStateToProps = state => ({
@@ -108,6 +88,7 @@ const mapStateToProps = state => ({
 
 const mapDispatchToProps = {
   onAddContact: contactsOperations.addContact,
+  showWarning: authActions.registerError,
 };
 
 export default connect(mapStateToProps, mapDispatchToProps)(AddContactForm);

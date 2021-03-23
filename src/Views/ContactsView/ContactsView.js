@@ -31,13 +31,19 @@ class ContactsView extends Component {
           <h1 className={s.title}>Phonebook</h1>
         </CSSTransition>
 
+        {this.props.loading && (
+          <Loader
+            className={s.loader}
+            type="Oval"
+            color="#00BFFF"
+            width={'50px'}
+            height={'50px'}
+          />
+        )}
+
         <AddContactForm />
 
         <Filter />
-
-        {this.props.loading && (
-          <Loader type="Oval" color="#00BFFF" width={'5vw'} />
-        )}
 
         <ContactsList />
       </div>
